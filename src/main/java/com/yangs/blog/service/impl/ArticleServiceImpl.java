@@ -1,5 +1,6 @@
 package com.yangs.blog.service.impl;
 
+import com.yangs.blog.common.ResResult;
 import com.yangs.blog.entity.BlogArticle;
 import com.yangs.blog.repository.BlogArticleRepository;
 import com.yangs.blog.service.ArticleService;
@@ -9,6 +10,7 @@ import com.yangs.blog.wrapper.ArticleWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,8 +22,8 @@ public class ArticleServiceImpl implements ArticleService {
     BlogArticleRepository blogArticleRepository;
 
     @Override
-    public List<ArticleListVO> findAllArticle(ArticleWrapper.ArticleListDTO request) {
-        PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize());
+    public ResResult findAllArticle(ArticleWrapper.ArticleListDTO request) {
+        PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize(), Sort.by("id"));
         Page<BlogArticle> resultPage = blogArticleRepository.findAll(pageRequest);
         List<BlogArticle> allArticle = resultPage.getContent();
 
@@ -37,7 +39,13 @@ public class ArticleServiceImpl implements ArticleService {
             articleListVO.setUpdateTime(TimeUtils.formatTime(article.getUpdateTime()));
             articleList.add(articleListVO);
         }
-        return articleList;
+
+        long count = blogArticleRepository.count();
+
+        ResResult<ArticleListVO> resResult = new ResResult<>();
+        resResult.setCount((int) count);
+        resResult.setRow(articleList);
+        return resResult;
     }
 
     @Override
