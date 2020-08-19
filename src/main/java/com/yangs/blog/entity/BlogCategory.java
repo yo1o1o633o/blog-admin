@@ -13,4 +13,6 @@ public class BlogCategory {
     private Integer id;
 
     private String name;
+
+    private Integer createTime;
 }

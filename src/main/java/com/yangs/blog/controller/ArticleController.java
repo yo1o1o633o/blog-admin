@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(value = {"http://localhost:8080"})
+@CrossOrigin(value = {"http://localhost:8081"})
 public class ArticleController {
 
     @Autowired

@@ -8,10 +8,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "blog_tag")
 public class BlogTag {
-    
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
+
+    private Integer createTime;
 }
