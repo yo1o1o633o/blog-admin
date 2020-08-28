@@ -56,12 +56,31 @@ public class ArticleServiceImpl implements ArticleService {
         article.setStatus(1);
         article.setViewNum(0);
         article.setCreateTime((int) (System.currentTimeMillis() / 1000));
-        article.setUpdateTime((int) (System.currentTimeMillis() / 1000));
         blogArticleRepository.save(article);
     }
 
     @Override
     public void modifyArticle(ArticleWrapper.ArticleModifyDTO request) {
+        BlogArticle article = blogArticleRepository.findById(request.getId()).orElse(null);
+        if (article != null) {
+            article.setTitle(request.getTitle());
+            article.setContent(request.getContent());
+            article.setUpdateTime((int) (System.currentTimeMillis() / 1000));
+            blogArticleRepository.save(article);
+        }
+    }
 
+    @Override
+    public void modifyStatusArticle(ArticleWrapper.ArticleModifyStatusDTO request) {
+        BlogArticle article = blogArticleRepository.findById(request.getId()).orElse(null);
+        if (article != null) {
+            article.setStatus(request.getStatus());
+            blogArticleRepository.save(article);
+        }
+    }
+
+    @Override
+    public BlogArticle findArticleById(ArticleWrapper.ArticleDetailDTO request) {
+        return blogArticleRepository.findById(request.getId()).orElse(null);
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(value = {"http://localhost:8081"})
+@CrossOrigin(value = {"http://localhost:8080"})
 public class ArticleController {
 
     @Autowired
@@ -28,5 +28,15 @@ public class ArticleController {
     @RequestMapping("/modify/article")
     public void modifyArticle(@RequestBody @Valid ArticleWrapper.ArticleModifyDTO request) {
         articleService.modifyArticle(request);
+    }
+
+    @RequestMapping("/article/modify/status")
+    public void modifyArticleStatus(@RequestBody @Valid ArticleWrapper.ArticleModifyStatusDTO request) {
+        articleService.modifyStatusArticle(request);
+    }
+
+    @RequestMapping("/article/detail")
+    public String findArticleById(@RequestBody @Valid ArticleWrapper.ArticleDetailDTO request) {
+        return JSONObject.toJSONString(articleService.findArticleById(request));
     }
 }

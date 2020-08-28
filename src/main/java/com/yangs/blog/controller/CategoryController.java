@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(value = {"http://localhost:8081"})
+@CrossOrigin(value = {"http://localhost:8080"})
 public class CategoryController {
     @Autowired
     CategoryService categoryService;

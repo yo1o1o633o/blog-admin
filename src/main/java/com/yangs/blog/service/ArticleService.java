@@ -1,6 +1,7 @@
 package com.yangs.blog.service;
 
 import com.yangs.blog.common.ResResult;
+import com.yangs.blog.entity.BlogArticle;
 import com.yangs.blog.wrapper.ArticleWrapper;
 
 
@@ -10,4 +11,8 @@ public interface ArticleService {
     void addArticle(ArticleWrapper.ArticleAddDTO request);
 
     void modifyArticle(ArticleWrapper.ArticleModifyDTO request);
+
+    void modifyStatusArticle(ArticleWrapper.ArticleModifyStatusDTO request);
+
+    BlogArticle findArticleById(ArticleWrapper.ArticleDetailDTO request);
 }

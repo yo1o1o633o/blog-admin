@@ -31,4 +31,20 @@ public class ArticleWrapper {
 
         private String content;
     }
+
+    @Data
+    public static class ArticleModifyStatusDTO {
+        @Min(1)
+        @NotNull
+        private Integer id;
+
+        private Integer status;
+    }
+
+    @Data
+    public static class ArticleDetailDTO {
+        @Min(1)
+        @NotNull
+        private Integer id;
+    }
 }
