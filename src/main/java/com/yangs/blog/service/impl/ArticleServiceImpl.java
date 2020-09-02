@@ -33,7 +33,7 @@ public class ArticleServiceImpl implements ArticleService {
             articleListVO.setContent(article.getContent());
             articleListVO.setId(article.getId());
             articleListVO.setTitle(article.getTitle());
-            articleListVO.setStatus(article.getStatus() == 1 ? "显示" : "隐藏");
+            articleListVO.setStatus(article.getStatus());
             articleListVO.setViewNum(article.getViewNum());
             articleListVO.setCreateTime(TimeUtils.formatTime(article.getCreateTime()));
             articleListVO.setUpdateTime(TimeUtils.formatTime(article.getUpdateTime()));
@@ -56,6 +56,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setStatus(1);
         article.setViewNum(0);
         article.setCreateTime((int) (System.currentTimeMillis() / 1000));
+        article.setUpdateTime((int) (System.currentTimeMillis() / 1000));
         blogArticleRepository.save(article);
     }
 
@@ -82,5 +83,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public BlogArticle findArticleById(ArticleWrapper.ArticleDetailDTO request) {
         return blogArticleRepository.findById(request.getId()).orElse(null);
+    }
+
+    @Override
+    public void removeArticle(ArticleWrapper.ArticleDetailDTO request) {
+        blogArticleRepository.deleteById(request.getId());
     }
 }

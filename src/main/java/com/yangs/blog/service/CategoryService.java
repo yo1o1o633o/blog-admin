@@ -10,5 +10,7 @@ public interface CategoryService {
 
     void modifyCategory(CategoryWrapper.CategoryModifyDTO request);
 
-    void removeCategory(CategoryWrapper.CategoryListDTO request);
+    void modifyStatusCategory(CategoryWrapper.CategoryModifyStatusDTO request);
+
+    void removeCategory(CategoryWrapper.CategoryDetailDTO request);
 }

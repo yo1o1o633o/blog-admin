@@ -8,5 +8,7 @@ public class CategoryListVO {
 
     private String name;
 
+    private Integer status;
+
     private String createTime;
 }

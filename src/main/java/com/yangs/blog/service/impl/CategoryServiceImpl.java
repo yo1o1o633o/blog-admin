@@ -29,6 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
         for (BlogCategory category : categoryList) {
             CategoryListVO categoryListVO = new CategoryListVO();
             categoryListVO.setName(category.getName());
+            categoryListVO.setStatus(category.getStatus());
             categoryListVO.setId(category.getId());
             categoryListVO.setCreateTime(TimeUtils.formatTime(category.getCreateTime()));
             categoryLists.add(categoryListVO);
@@ -44,8 +45,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void addCategory(CategoryWrapper.CategoryAddDTO request) {
         BlogCategory category = new BlogCategory();
+        category.setStatus(1);
         category.setName(request.getName());
-        category.setCreateTime((int) System.currentTimeMillis() / 1000);
+        category.setCreateTime((int) (System.currentTimeMillis() / 1000));
+        category.setUpdateTime((int) (System.currentTimeMillis() / 1000));
         blogCategoryRepository.save(category);
     }
 
@@ -56,11 +59,21 @@ public class CategoryServiceImpl implements CategoryService {
             return;
         }
         category.setName(request.getName());
+        category.setUpdateTime((int) (System.currentTimeMillis() / 1000));
         blogCategoryRepository.save(category);
     }
 
     @Override
-    public void removeCategory(CategoryWrapper.CategoryListDTO request) {
+    public void modifyStatusCategory(CategoryWrapper.CategoryModifyStatusDTO request) {
+        BlogCategory category = blogCategoryRepository.findById(request.getId()).orElse(null);
+        if (category != null) {
+            category.setStatus(request.getStatus());
+            blogCategoryRepository.save(category);
+        }
+    }
 
+    @Override
+    public void removeCategory(CategoryWrapper.CategoryDetailDTO request) {
+        blogCategoryRepository.deleteById(request.getId());
     }
 }

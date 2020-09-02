@@ -39,4 +39,9 @@ public class ArticleController {
     public String findArticleById(@RequestBody @Valid ArticleWrapper.ArticleDetailDTO request) {
         return JSONObject.toJSONString(articleService.findArticleById(request));
     }
+
+    @RequestMapping("/article/remove")
+    public void removeArticle(@RequestBody @Valid ArticleWrapper.ArticleDetailDTO request) {
+        articleService.removeArticle(request);
+    }
 }

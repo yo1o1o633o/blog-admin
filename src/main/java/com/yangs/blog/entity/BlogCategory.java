@@ -12,7 +12,11 @@ public class BlogCategory {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
+    private Integer status;
+
     private String name;
 
     private Integer createTime;
+
+    private Integer updateTime;
 }

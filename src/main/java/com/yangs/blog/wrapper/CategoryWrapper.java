@@ -27,4 +27,20 @@ public class CategoryWrapper {
 
         private String name;
     }
+
+    @Data
+    public static class CategoryModifyStatusDTO {
+        @Min(1)
+        @NotNull
+        private Integer id;
+
+        private Integer status;
+    }
+
+    @Data
+    public static class CategoryDetailDTO {
+        @Min(1)
+        @NotNull
+        private Integer id;
+    }
 }

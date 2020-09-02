@@ -15,4 +15,6 @@ public interface ArticleService {
     void modifyStatusArticle(ArticleWrapper.ArticleModifyStatusDTO request);
 
     BlogArticle findArticleById(ArticleWrapper.ArticleDetailDTO request);
+
+    void removeArticle(ArticleWrapper.ArticleDetailDTO request);
 }

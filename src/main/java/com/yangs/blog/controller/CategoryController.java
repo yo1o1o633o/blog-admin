@@ -34,8 +34,15 @@ public class CategoryController {
         return null;
     }
 
+    @PostMapping("/category/modify/status")
+    public ResResult modifyStatusCategory(@RequestBody @Valid CategoryWrapper.CategoryModifyStatusDTO request) {
+        categoryService.modifyStatusCategory(request);
+        return null;
+    }
+
     @PostMapping("/category/remove")
-    public ResResult removeCategory(@RequestBody @Valid CategoryWrapper.CategoryListDTO request) {
+    public ResResult removeCategory(@RequestBody @Valid CategoryWrapper.CategoryDetailDTO request) {
+        categoryService.removeCategory(request);
         return null;
     }
 }

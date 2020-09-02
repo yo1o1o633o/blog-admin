@@ -12,7 +12,7 @@ public class ArticleListVO {
 
     private Integer viewNum;
 
-    private String status;
+    private Integer status;
 
     private String createTime;
 
