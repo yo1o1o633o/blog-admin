@@ -8,5 +8,7 @@ public class TagListVO {
 
     private String name;
 
+    private Integer status;
+
     private String createTime;
 }

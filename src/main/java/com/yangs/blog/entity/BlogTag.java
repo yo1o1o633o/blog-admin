@@ -14,5 +14,11 @@ public class BlogTag {
 
     private String name;
 
+    private Integer status;
+
+    @Column(name = "create_time")
     private Integer createTime;
+
+    @Column(name = "update_time")
+    private Integer updateTime;
 }

@@ -1,10 +1,15 @@
 package com.yangs.blog.service;
 
 import com.yangs.blog.common.ResResult;
+import com.yangs.blog.entity.BlogCategory;
 import com.yangs.blog.wrapper.CategoryWrapper;
 
+import java.util.List;
+
 public interface CategoryService {
-    ResResult findAllCategoryList(CategoryWrapper.CategoryListDTO request);
+    ResResult findAllCategory(CategoryWrapper.CategoryListDTO request);
+
+    List<BlogCategory> findAllCategoryList();
 
     void addCategory(CategoryWrapper.CategoryAddDTO request);
 

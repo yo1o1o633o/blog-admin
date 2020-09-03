@@ -34,8 +34,15 @@ public class TagController {
         return null;
     }
 
+    @PostMapping("/tag/modify/status")
+    public String modifyStatusTag(@RequestBody @Valid TagWrapper.TagModifyStatusDTO request) {
+        tagService.modifyStatusTag(request);
+        return null;
+    }
+
     @PostMapping("/tag/remove")
-    public String removeTag(@RequestBody @Valid TagWrapper.TagListDTO request) {
+    public String removeTag(@RequestBody @Valid TagWrapper.TagDetailDTO request) {
+        tagService.removeTag(request);
         return null;
     }
 }

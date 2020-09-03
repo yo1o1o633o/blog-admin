@@ -16,7 +16,9 @@ public class BlogCategory {
 
     private String name;
 
+    @Column(name = "create_time")
     private Integer createTime;
 
+    @Column(name = "update_time")
     private Integer updateTime;
 }

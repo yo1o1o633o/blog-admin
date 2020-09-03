@@ -32,6 +32,7 @@ public class TagServiceImpl implements TagService {
             TagListVO tagListVO = new TagListVO();
             tagListVO.setCreateTime(TimeUtils.formatTime(tag.getCreateTime()));
             tagListVO.setName(tag.getName());
+            tagListVO.setStatus(tag.getStatus());
             tagListVO.setId(tag.getId());
             tagList.add(tagListVO);
         }
@@ -48,7 +49,9 @@ public class TagServiceImpl implements TagService {
     public void addTag(TagWrapper.TagAddDTO request) {
         BlogTag blogTag = new BlogTag();
         blogTag.setName(request.getName());
-        blogTag.setCreateTime((int) System.currentTimeMillis() / 1000);
+        blogTag.setStatus(1);
+        blogTag.setCreateTime((int) (System.currentTimeMillis() / 1000));
+        blogTag.setUpdateTime((int) (System.currentTimeMillis() / 1000));
         blogTagRepository.save(blogTag);
     }
 
@@ -63,7 +66,16 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void removeTag(TagWrapper.TagListDTO request) {
+    public void modifyStatusTag(TagWrapper.TagModifyStatusDTO request) {
+        BlogTag blogTag = blogTagRepository.findById(request.getId()).orElse(null);
+        if (blogTag != null) {
+            blogTag.setStatus(request.getStatus());
+            blogTagRepository.save(blogTag);
+        }
+    }
 
+    @Override
+    public void removeTag(TagWrapper.TagDetailDTO request) {
+        blogTagRepository.deleteById(request.getId());
     }
 }

@@ -10,5 +10,7 @@ public interface TagService {
 
     void modifyTag(TagWrapper.TagModifyDTO request);
 
-    void removeTag(TagWrapper.TagListDTO request);
+    void modifyStatusTag(TagWrapper.TagModifyStatusDTO request);
+
+    void removeTag(TagWrapper.TagDetailDTO request);
 }

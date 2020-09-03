@@ -27,4 +27,20 @@ public class TagWrapper {
 
         private String name;
     }
+
+    @Data
+    public static class TagModifyStatusDTO {
+        @Min(1)
+        @NotNull
+        private Integer id;
+
+        private Integer status;
+    }
+
+    @Data
+    public static class TagDetailDTO {
+        @Min(1)
+        @NotNull
+        private Integer id;
+    }
 }

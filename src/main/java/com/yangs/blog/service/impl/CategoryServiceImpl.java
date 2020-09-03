@@ -21,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
     BlogCategoryRepository blogCategoryRepository;
 
     @Override
-    public ResResult findAllCategoryList(CategoryWrapper.CategoryListDTO request) {
+    public ResResult findAllCategory(CategoryWrapper.CategoryListDTO request) {
         PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize());
         Page<BlogCategory> categoryList = blogCategoryRepository.findAll(pageRequest);
 
@@ -40,6 +40,11 @@ public class CategoryServiceImpl implements CategoryService {
         resResult.setCount((int) count);
         resResult.setRow(categoryLists);
         return resResult;
+    }
+
+    @Override
+    public List<BlogCategory> findAllCategoryList() {
+        return blogCategoryRepository.findAllByStatus(1);
     }
 
     @Override
