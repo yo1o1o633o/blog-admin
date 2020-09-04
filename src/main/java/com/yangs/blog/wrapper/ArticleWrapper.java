@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class ArticleWrapper {
     @Data
@@ -17,6 +18,14 @@ public class ArticleWrapper {
     @Data
     public static class ArticleAddDTO {
         private String title;
+
+        private Integer categoryId;
+
+        private Integer time;
+
+        private List<Integer> tagId;
+
+        private String description;
 
         private String content;
     }

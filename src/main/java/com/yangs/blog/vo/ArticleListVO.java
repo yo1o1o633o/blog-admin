@@ -14,6 +14,8 @@ public class ArticleListVO {
 
     private Integer status;
 
+    private String categoryName;
+
     private String createTime;
 
     private String updateTime;

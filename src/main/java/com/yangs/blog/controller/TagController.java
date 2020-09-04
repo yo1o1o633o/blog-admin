@@ -1,6 +1,7 @@
 package com.yangs.blog.controller;
 
 import com.yangs.blog.common.ResResult;
+import com.yangs.blog.entity.BlogTag;
 import com.yangs.blog.service.TagService;
 import com.yangs.blog.wrapper.TagWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +11,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @CrossOrigin(value = {"http://localhost:8080"})
 public class TagController {
     @Autowired
     TagService tagService;
+
+    @PostMapping("/tag")
+    public List<BlogTag> findAllTagList() {
+        return tagService.findAllTag();
+    }
 
     @PostMapping("/tag/list")
     public ResResult listTag(@RequestBody @Valid TagWrapper.TagListDTO request) {

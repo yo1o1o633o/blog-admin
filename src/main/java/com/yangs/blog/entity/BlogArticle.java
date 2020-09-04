@@ -19,8 +19,16 @@ public class BlogArticle {
 
     private Integer status;
 
+    private String description;
+
+    @Column(name = "category_id")
+    private Integer categoryId;
+
     @Column(name = "view_num")
     private Integer viewNum;
+
+    @Column(name = "archive_time")
+    private Integer archiveTime;
 
     @Column(name = "create_time")
     private Integer createTime;

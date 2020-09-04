@@ -46,6 +46,11 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public List<BlogTag> findAllTag() {
+        return blogTagRepository.findAllByStatus(1);
+    }
+
+    @Override
     public void addTag(TagWrapper.TagAddDTO request) {
         BlogTag blogTag = new BlogTag();
         blogTag.setName(request.getName());
