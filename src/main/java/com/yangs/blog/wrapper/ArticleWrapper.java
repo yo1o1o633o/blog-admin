@@ -39,6 +39,14 @@ public class ArticleWrapper {
         private String title;
 
         private String content;
+
+        private Integer time;
+
+        private String description;
+
+        private List<Integer> tagIds;
+
+        private Integer categoryId;
     }
 
     @Data

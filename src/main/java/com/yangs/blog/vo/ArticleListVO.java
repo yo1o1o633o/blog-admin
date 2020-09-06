@@ -2,11 +2,15 @@ package com.yangs.blog.vo;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ArticleListVO {
     private Integer id;
 
     private String title;
+
+    private String description;
 
     private String content;
 
@@ -15,6 +19,8 @@ public class ArticleListVO {
     private Integer status;
 
     private String categoryName;
+
+    private List<ArticleTagListVO> tagList;
 
     private String createTime;
 

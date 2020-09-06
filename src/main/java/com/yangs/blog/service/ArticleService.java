@@ -1,8 +1,11 @@
 package com.yangs.blog.service;
 
 import com.yangs.blog.common.ResResult;
-import com.yangs.blog.entity.BlogArticle;
+import com.yangs.blog.vo.ArchiveListVO;
+import com.yangs.blog.vo.ArticleDetailVO;
 import com.yangs.blog.wrapper.ArticleWrapper;
+
+import java.util.List;
 
 
 public interface ArticleService {
@@ -14,7 +17,9 @@ public interface ArticleService {
 
     void modifyStatusArticle(ArticleWrapper.ArticleModifyStatusDTO request);
 
-    BlogArticle findArticleById(ArticleWrapper.ArticleDetailDTO request);
+    ArticleDetailVO findArticleById(ArticleWrapper.ArticleDetailDTO request);
 
     void removeArticle(ArticleWrapper.ArticleDetailDTO request);
+
+    List<ArchiveListVO> findAllArchiveList();
 }

@@ -10,6 +10,7 @@ import com.yangs.blog.wrapper.CategoryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,7 +23,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ResResult findAllCategory(CategoryWrapper.CategoryListDTO request) {
-        PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize());
+        List<Sort.Order> orders = new ArrayList<>();
+        orders.add(new Sort.Order(Sort.Direction.DESC, "id"));
+        Sort sort = Sort.by(orders);
+
+        PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize(), sort);
         Page<BlogCategory> categoryList = blogCategoryRepository.findAll(pageRequest);
 
         List<CategoryListVO> categoryLists = new ArrayList<>();

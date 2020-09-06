@@ -7,4 +7,9 @@ public class TimeUtils {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return simpleDateFormat.format(time * 1000L);
     }
+
+    public static String formatTimeToDay(Integer time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd");
+        return simpleDateFormat.format(time * 1000L);
+    }
 }

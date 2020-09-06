@@ -2,11 +2,14 @@ package com.yangs.blog.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yangs.blog.service.ArticleService;
+import com.yangs.blog.vo.ArchiveListVO;
+import com.yangs.blog.vo.ArticleDetailVO;
 import com.yangs.blog.wrapper.ArticleWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @CrossOrigin(value = {"http://localhost:8080"})
@@ -36,12 +39,17 @@ public class ArticleController {
     }
 
     @RequestMapping("/article/detail")
-    public String findArticleById(@RequestBody @Valid ArticleWrapper.ArticleDetailDTO request) {
-        return JSONObject.toJSONString(articleService.findArticleById(request));
+    public ArticleDetailVO findArticleById(@RequestBody @Valid ArticleWrapper.ArticleDetailDTO request) {
+        return articleService.findArticleById(request);
     }
 
     @RequestMapping("/article/remove")
     public void removeArticle(@RequestBody @Valid ArticleWrapper.ArticleDetailDTO request) {
         articleService.removeArticle(request);
+    }
+
+    @RequestMapping("/archive/list")
+    public List<ArchiveListVO> findAllArchiveList() {
+        return articleService.findAllArchiveList();
     }
 }

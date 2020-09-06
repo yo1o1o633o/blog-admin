@@ -10,6 +10,7 @@ import com.yangs.blog.wrapper.TagWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,7 +24,11 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public ResResult findAllTagList(TagWrapper.TagListDTO request) {
-        PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize());
+        List<Sort.Order> orders = new ArrayList<>();
+        orders.add(new Sort.Order(Sort.Direction.DESC, "id"));
+        Sort sort = Sort.by(orders);
+
+        PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize(), sort);
         Page<BlogTag> tagPage = blogTagRepository.findAll(pageRequest);
 
         List<TagListVO> tagList = new ArrayList<>();
