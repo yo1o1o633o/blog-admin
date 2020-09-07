@@ -5,7 +5,6 @@ import com.yangs.blog.entity.BlogTag;
 import com.yangs.blog.service.TagService;
 import com.yangs.blog.wrapper.TagWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +13,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@CrossOrigin(value = {"http://localhost:8080"})
 public class TagController {
     @Autowired
     TagService tagService;
