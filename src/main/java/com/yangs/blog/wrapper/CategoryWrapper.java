@@ -9,13 +9,16 @@ public class CategoryWrapper {
     @Data
     public static class CategoryListDTO {
         @Min(1)
+        @NotNull
         private Integer page;
         @Min(1)
+        @NotNull
         private Integer size;
     }
 
     @Data
     public static class CategoryAddDTO {
+        @NotNull
         private String name;
     }
 
@@ -25,6 +28,7 @@ public class CategoryWrapper {
         @NotNull
         private Integer id;
 
+        @NotNull
         private String name;
     }
 
@@ -34,6 +38,7 @@ public class CategoryWrapper {
         @NotNull
         private Integer id;
 
+        @NotNull
         private Integer status;
     }
 
