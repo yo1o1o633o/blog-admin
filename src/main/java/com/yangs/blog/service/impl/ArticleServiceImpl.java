@@ -13,7 +13,6 @@ import com.yangs.blog.service.ArticleService;
 import com.yangs.blog.utils.TimeUtils;
 import com.yangs.blog.vo.*;
 import com.yangs.blog.wrapper.ArticleWrapper;
-import org.dozer.loader.DozerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +20,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,22 +27,22 @@ import java.util.Optional;
 @Service
 public class ArticleServiceImpl implements ArticleService {
     @Autowired
-    BlogArticleRepository blogArticleRepository;
+    BlogArticleRepository articleRepository;
     @Autowired
-    BlogArticleTagRepository blogArticleTagRepository;
+    BlogArticleTagRepository articleTagRepository;
     @Autowired
-    BlogCategoryRepository blogCategoryRepository;
+    BlogCategoryRepository categoryRepository;
     @Autowired
-    BlogTagRepository blogTagRepository;
+    BlogTagRepository tagRepository;
 
     @Override
-    public ResResult findAllArticle(ArticleWrapper.ArticleListDTO request) {
+    public ResResult findAllArticle(Integer page, Integer size) {
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.DESC, "id"));
         Sort sort = Sort.by(orders);
 
-        PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize(), sort);
-        Page<BlogArticle> resultPage = blogArticleRepository.findAll(pageRequest);
+        PageRequest pageRequest = PageRequest.of(page - 1, size, sort);
+        Page<BlogArticle> resultPage = articleRepository.findAll(pageRequest);
         List<BlogArticle> allArticle = resultPage.getContent();
 
         List<ArticleListVO> articleList = new ArrayList<>();
@@ -58,17 +56,14 @@ public class ArticleServiceImpl implements ArticleService {
             articleListVO.setViewNum(article.getViewNum());
             articleListVO.setCreateTime(TimeUtils.formatTime(article.getCreateTime()));
             articleListVO.setUpdateTime(TimeUtils.formatTime(article.getUpdateTime()));
+            articleListVO.setArchiveTime(TimeUtils.formatTime(article.getArchiveTime()));
             if (article.getCategoryId() != null) {
-                Optional<BlogCategory> categoryOptional = blogCategoryRepository.findById(article.getCategoryId());
-                if (categoryOptional.isPresent()) {
-                    BlogCategory category = categoryOptional.get();
-                    articleListVO.setCategoryName(category.getName());
-                }
+                categoryRepository.findById(article.getCategoryId()).ifPresent(category -> articleListVO.setCategoryName(category.getName()));
             }
-            List<BlogArticleTag> articleTags = blogArticleTagRepository.findAllByArticleId(article.getId());
+            List<BlogArticleTag> articleTags = articleTagRepository.findAllByArticleId(article.getId());
             List<ArticleTagListVO> articleTagListVOList = new ArrayList<>();
             for (BlogArticleTag articleTag : articleTags) {
-                BlogTag blogTag = blogTagRepository.findById(articleTag.getTagId()).orElse(null);
+                BlogTag blogTag = tagRepository.findById(articleTag.getTagId()).orElse(null);
                 if (blogTag != null) {
                     ArticleTagListVO articleTagListVO = new ArticleTagListVO();
                     articleTagListVO.setId(blogTag.getId());
@@ -80,7 +75,7 @@ public class ArticleServiceImpl implements ArticleService {
             articleList.add(articleListVO);
         }
 
-        long count = blogArticleRepository.count();
+        long count = articleRepository.count();
 
         ResResult<ArticleListVO> resResult = new ResResult<>();
         resResult.setCount((int) count);
@@ -98,9 +93,9 @@ public class ArticleServiceImpl implements ArticleService {
         article.setArchiveTime(request.getTime());
         article.setStatus(1);
         article.setViewNum(0);
-        article.setCreateTime((int) (System.currentTimeMillis() / 1000));
-        article.setUpdateTime((int) (System.currentTimeMillis() / 1000));
-        blogArticleRepository.save(article);
+        article.setCreateTime(TimeUtils.getCurrentTime());
+        article.setUpdateTime(TimeUtils.getCurrentTime());
+        articleRepository.save(article);
 
         Integer id = article.getId();
         for (Integer tagId : request.getTagId()) {
@@ -108,47 +103,48 @@ public class ArticleServiceImpl implements ArticleService {
             blogArticleTag.setArticleId(id);
             blogArticleTag.setTagId(tagId);
 
-            blogArticleTagRepository.save(blogArticleTag);
+            articleTagRepository.save(blogArticleTag);
         }
     }
 
     @Override
     @Transactional
     public void modifyArticle(ArticleWrapper.ArticleModifyDTO request) {
-        BlogArticle article = blogArticleRepository.findById(request.getId()).orElse(null);
-        if (article != null) {
-            article.setTitle(request.getTitle());
-            article.setContent(request.getContent());
-            article.setDescription(request.getDescription());
-            article.setArchiveTime(request.getTime());
-            article.setCategoryId(request.getCategoryId());
-            blogArticleTagRepository.deleteAllByArticleId(article.getId());
-            if (request.getTagIds() != null && request.getTagIds().size() > 0) {
-                for (Integer tagId : request.getTagIds()) {
-                    BlogArticleTag blogArticleTag = new BlogArticleTag();
-                    blogArticleTag.setArticleId(article.getId());
-                    blogArticleTag.setTagId(tagId);
-
-                    blogArticleTagRepository.save(blogArticleTag);
-                }
-            }
-            article.setUpdateTime((int) (System.currentTimeMillis() / 1000));
-            blogArticleRepository.save(article);
+        BlogArticle article = articleRepository.findById(request.getId()).orElse(null);
+        if (article == null) {
+            return;
         }
+        article.setTitle(request.getTitle());
+        article.setContent(request.getContent());
+        article.setDescription(request.getDescription());
+        article.setArchiveTime(request.getTime());
+        article.setCategoryId(request.getCategoryId());
+        articleTagRepository.deleteAllByArticleId(article.getId());
+        if (request.getTagIds() != null && request.getTagIds().size() > 0) {
+            for (Integer tagId : request.getTagIds()) {
+                BlogArticleTag blogArticleTag = new BlogArticleTag();
+                blogArticleTag.setArticleId(article.getId());
+                blogArticleTag.setTagId(tagId);
+
+                articleTagRepository.save(blogArticleTag);
+            }
+        }
+        article.setUpdateTime(TimeUtils.getCurrentTime());
+        articleRepository.save(article);
     }
 
     @Override
     public void modifyStatusArticle(ArticleWrapper.ArticleModifyStatusDTO request) {
-        BlogArticle article = blogArticleRepository.findById(request.getId()).orElse(null);
+        BlogArticle article = articleRepository.findById(request.getId()).orElse(null);
         if (article != null) {
             article.setStatus(request.getStatus());
-            blogArticleRepository.save(article);
+            articleRepository.save(article);
         }
     }
 
     @Override
-    public ArticleDetailVO findArticleById(ArticleWrapper.ArticleDetailDTO request) {
-        BlogArticle article = blogArticleRepository.findById(request.getId()).orElse(null);
+    public ArticleDetailVO findArticleById(Integer id) {
+        BlogArticle article = articleRepository.findById(id).orElse(null);
         if (article == null) {
             return null;
         }
@@ -159,13 +155,13 @@ public class ArticleServiceImpl implements ArticleService {
         articleDetailVO.setDescription(article.getDescription());
         articleDetailVO.setCategoryId(article.getCategoryId());
 
-        List<BlogArticleTag> articleTagList = blogArticleTagRepository.findAllByArticleId(article.getId());
+        List<BlogArticleTag> articleTagList = articleTagRepository.findAllByArticleId(article.getId());
         List<Integer> tagList = new ArrayList<>();
         List<String> tagNameList = new ArrayList<>();
         for (BlogArticleTag articleTag : articleTagList) {
             tagList.add(articleTag.getTagId());
             if (articleTag.getTagId() != null) {
-                BlogTag blogTag = blogTagRepository.findById(articleTag.getTagId()).orElse(null);
+                BlogTag blogTag = tagRepository.findById(articleTag.getTagId()).orElse(null);
                 if (blogTag == null) {
                     continue;
                 }
@@ -180,8 +176,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void removeArticle(ArticleWrapper.ArticleDetailDTO request) {
-        blogArticleRepository.deleteById(request.getId());
+    public void removeArticle(Integer id) {
+        articleRepository.findById(id).ifPresent(article -> articleRepository.deleteById(id));
     }
 
     @Override
@@ -195,7 +191,7 @@ public class ArticleServiceImpl implements ArticleService {
         orders.add(new Sort.Order(Sort.Direction.DESC, "archiveTime"));
         Sort sort = Sort.by(orders);
 
-        List<BlogArticle> articleList = blogArticleRepository.findAll(sort);
+        List<BlogArticle> articleList = articleRepository.findAll(sort);
         List<ArchiveItem> archiveItems = new ArrayList<>();
         for (BlogArticle article : articleList) {
             ArchiveItem archiveItem = new ArchiveItem();

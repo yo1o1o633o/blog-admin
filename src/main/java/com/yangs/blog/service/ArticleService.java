@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public interface ArticleService {
-    ResResult findAllArticle(ArticleWrapper.ArticleListDTO request);
+    ResResult findAllArticle(Integer page, Integer size);
 
     void addArticle(ArticleWrapper.ArticleAddDTO request);
 
@@ -17,9 +17,9 @@ public interface ArticleService {
 
     void modifyStatusArticle(ArticleWrapper.ArticleModifyStatusDTO request);
 
-    ArticleDetailVO findArticleById(ArticleWrapper.ArticleDetailDTO request);
+    ArticleDetailVO findArticleById(Integer id);
 
-    void removeArticle(ArticleWrapper.ArticleDetailDTO request);
+    void removeArticle(Integer id);
 
     List<ArchiveListVO> findAllArchiveList();
 }

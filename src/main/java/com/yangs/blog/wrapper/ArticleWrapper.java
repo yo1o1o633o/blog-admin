@@ -8,14 +8,6 @@ import java.util.List;
 
 public class ArticleWrapper {
     @Data
-    public static class ArticleListDTO {
-        @Min(1)
-        private Integer page;
-        @Min(1)
-        private Integer size;
-    }
-
-    @Data
     public static class ArticleAddDTO {
         private String title;
 
@@ -56,12 +48,5 @@ public class ArticleWrapper {
         private Integer id;
 
         private Integer status;
-    }
-
-    @Data
-    public static class ArticleDetailDTO {
-        @Min(1)
-        @NotNull
-        private Integer id;
     }
 }

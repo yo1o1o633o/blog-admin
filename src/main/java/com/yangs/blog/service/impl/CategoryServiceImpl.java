@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
-    BlogCategoryRepository blogCategoryRepository;
+    BlogCategoryRepository categoryRepository;
 
     @Override
     public ResResult findAllCategory(CategoryWrapper.CategoryListDTO request) {
@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
         Sort sort = Sort.by(orders);
 
         PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize(), sort);
-        Page<BlogCategory> categoryList = blogCategoryRepository.findAll(pageRequest);
+        Page<BlogCategory> categoryList = categoryRepository.findAll(pageRequest);
 
         List<CategoryListVO> categoryLists = new ArrayList<>();
         for (BlogCategory category : categoryList) {
@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
             categoryListVO.setCreateTime(TimeUtils.formatTime(category.getCreateTime()));
             categoryLists.add(categoryListVO);
         }
-        long count = blogCategoryRepository.count();
+        long count = categoryRepository.count();
 
         ResResult<CategoryListVO> resResult = new ResResult<>();
         resResult.setCount((int) count);
@@ -49,7 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<BlogCategory> findAllCategoryList() {
-        return blogCategoryRepository.findAllByStatus(1);
+        return categoryRepository.findAllByStatus(1);
     }
 
     @Override
@@ -57,33 +57,33 @@ public class CategoryServiceImpl implements CategoryService {
         BlogCategory category = new BlogCategory();
         category.setStatus(1);
         category.setName(request.getName());
-        category.setCreateTime((int) (System.currentTimeMillis() / 1000));
-        category.setUpdateTime((int) (System.currentTimeMillis() / 1000));
-        blogCategoryRepository.save(category);
+        category.setCreateTime(TimeUtils.getCurrentTime());
+        category.setUpdateTime(TimeUtils.getCurrentTime());
+        categoryRepository.save(category);
     }
 
     @Override
     public void modifyCategory(CategoryWrapper.CategoryModifyDTO request) {
-        BlogCategory category = blogCategoryRepository.findById(request.getId()).orElse(null);
+        BlogCategory category = categoryRepository.findById(request.getId()).orElse(null);
         if (category == null) {
             return;
         }
         category.setName(request.getName());
-        category.setUpdateTime((int) (System.currentTimeMillis() / 1000));
-        blogCategoryRepository.save(category);
+        category.setUpdateTime(TimeUtils.getCurrentTime());
+        categoryRepository.save(category);
     }
 
     @Override
     public void modifyStatusCategory(CategoryWrapper.CategoryModifyStatusDTO request) {
-        BlogCategory category = blogCategoryRepository.findById(request.getId()).orElse(null);
+        BlogCategory category = categoryRepository.findById(request.getId()).orElse(null);
         if (category != null) {
             category.setStatus(request.getStatus());
-            blogCategoryRepository.save(category);
+            categoryRepository.save(category);
         }
     }
 
     @Override
     public void removeCategory(CategoryWrapper.CategoryDetailDTO request) {
-        blogCategoryRepository.deleteById(request.getId());
+        categoryRepository.deleteById(request.getId());
     }
 }

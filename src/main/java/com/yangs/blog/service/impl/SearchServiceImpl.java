@@ -14,18 +14,18 @@ import java.util.List;
 @Service
 public class SearchServiceImpl implements SearchService {
     @Autowired
-    BlogSearchHotWordRepository blogSearchHotWordRepository;
+    BlogSearchHotWordRepository searchHotWordRepository;
 
     @Override
     public List<Object> searchList(SearchWrapper.SearchWordDTO request) {
         BlogSearchHotWord blogSearchHotWord = new BlogSearchHotWord();
         blogSearchHotWord.setWord(request.getName());
-        blogSearchHotWordRepository.save(blogSearchHotWord);
+        searchHotWordRepository.save(blogSearchHotWord);
         return null;
     }
 
     @Override
     public List<BlogSearchHotWord> searchHotWordList() {
-        return blogSearchHotWordRepository.findAll();
+        return searchHotWordRepository.findAll();
     }
 }

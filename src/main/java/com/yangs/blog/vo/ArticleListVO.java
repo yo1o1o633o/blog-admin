@@ -25,4 +25,6 @@ public class ArticleListVO {
     private String createTime;
 
     private String updateTime;
+
+    private String archiveTime;
 }

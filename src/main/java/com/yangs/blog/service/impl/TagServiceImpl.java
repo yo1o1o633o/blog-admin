@@ -15,12 +15,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TagServiceImpl implements TagService {
     @Autowired
-    BlogTagRepository blogTagRepository;
+    BlogTagRepository tagRepository;
 
     @Override
     public ResResult findAllTagList(TagWrapper.TagListDTO request) {
@@ -29,7 +28,7 @@ public class TagServiceImpl implements TagService {
         Sort sort = Sort.by(orders);
 
         PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize(), sort);
-        Page<BlogTag> tagPage = blogTagRepository.findAll(pageRequest);
+        Page<BlogTag> tagPage = tagRepository.findAll(pageRequest);
 
         List<TagListVO> tagList = new ArrayList<>();
 
@@ -42,7 +41,7 @@ public class TagServiceImpl implements TagService {
             tagList.add(tagListVO);
         }
 
-        long count = blogTagRepository.count();
+        long count = tagRepository.count();
 
         ResResult<TagListVO> result = new ResResult<>();
         result.setRow(tagList);
@@ -52,7 +51,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<BlogTag> findAllTag() {
-        return blogTagRepository.findAllByStatus(1);
+        return tagRepository.findAllByStatus(1);
     }
 
     @Override
@@ -60,32 +59,30 @@ public class TagServiceImpl implements TagService {
         BlogTag blogTag = new BlogTag();
         blogTag.setName(request.getName());
         blogTag.setStatus(1);
-        blogTag.setCreateTime((int) (System.currentTimeMillis() / 1000));
-        blogTag.setUpdateTime((int) (System.currentTimeMillis() / 1000));
-        blogTagRepository.save(blogTag);
+        blogTag.setCreateTime(TimeUtils.getCurrentTime());
+        blogTag.setUpdateTime(TimeUtils.getCurrentTime());
+        tagRepository.save(blogTag);
     }
 
     @Override
     public void modifyTag(TagWrapper.TagModifyDTO request) {
-        BlogTag blogTag = blogTagRepository.findById(request.getId()).orElse(null);
-        if (blogTag == null) {
-            return;
-        }
-        blogTag.setName(request.getName());
-        blogTagRepository.save(blogTag);
+        tagRepository.findById(request.getId()).ifPresent(tag -> {
+            tag.setName(request.getName());
+            tagRepository.save(tag);
+        });
     }
 
     @Override
     public void modifyStatusTag(TagWrapper.TagModifyStatusDTO request) {
-        BlogTag blogTag = blogTagRepository.findById(request.getId()).orElse(null);
+        BlogTag blogTag = tagRepository.findById(request.getId()).orElse(null);
         if (blogTag != null) {
             blogTag.setStatus(request.getStatus());
-            blogTagRepository.save(blogTag);
+            tagRepository.save(blogTag);
         }
     }
 
     @Override
     public void removeTag(TagWrapper.TagDetailDTO request) {
-        blogTagRepository.deleteById(request.getId());
+        tagRepository.findById(request.getId()).ifPresent(tag -> tagRepository.deleteById(request.getId()));
     }
 }
