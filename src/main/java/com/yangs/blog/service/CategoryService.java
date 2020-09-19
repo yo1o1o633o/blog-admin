@@ -1,13 +1,17 @@
 package com.yangs.blog.service;
 
-import com.yangs.blog.common.ResResult;
+import com.yangs.blog.common.PageResult;
 import com.yangs.blog.entity.BlogCategory;
+import com.yangs.blog.vo.CategoryListVO;
 import com.yangs.blog.wrapper.CategoryWrapper;
 
 import java.util.List;
 
+/**
+ * @author shuai.yang
+ */
 public interface CategoryService {
-    ResResult findAllCategory(CategoryWrapper.CategoryListDTO request);
+    PageResult<CategoryListVO> findAllCategory(CategoryWrapper.CategoryListDTO request);
 
     List<BlogCategory> findAllCategoryList();
 

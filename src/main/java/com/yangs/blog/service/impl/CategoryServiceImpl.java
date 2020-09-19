@@ -1,5 +1,6 @@
 package com.yangs.blog.service.impl;
 
+import com.yangs.blog.common.PageResult;
 import com.yangs.blog.common.ResResult;
 import com.yangs.blog.entity.BlogCategory;
 import com.yangs.blog.repository.BlogCategoryRepository;
@@ -22,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
     BlogCategoryRepository categoryRepository;
 
     @Override
-    public ResResult findAllCategory(CategoryWrapper.CategoryListDTO request) {
+    public PageResult<CategoryListVO> findAllCategory(CategoryWrapper.CategoryListDTO request) {
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.DESC, "id"));
         Sort sort = Sort.by(orders);
@@ -41,9 +42,9 @@ public class CategoryServiceImpl implements CategoryService {
         }
         long count = categoryRepository.count();
 
-        ResResult<CategoryListVO> resResult = new ResResult<>();
-        resResult.setCount((int) count);
-        resResult.setRow(categoryLists);
+        PageResult<CategoryListVO> resResult = new PageResult<>();
+        resResult.setTotal(count);
+        resResult.setRows(categoryLists);
         return resResult;
     }
 

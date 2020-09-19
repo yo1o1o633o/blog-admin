@@ -1,5 +1,6 @@
 package com.yangs.blog.service.impl;
 
+import com.yangs.blog.common.PageResult;
 import com.yangs.blog.common.ResResult;
 import com.yangs.blog.entity.BlogArticle;
 import com.yangs.blog.entity.BlogArticleTag;
@@ -39,7 +40,7 @@ public class ArticleServiceImpl implements ArticleService {
     BlogTagRepository tagRepository;
 
     @Override
-    public ResResult findAllArticle(Integer page, Integer size) {
+    public PageResult findAllArticle(Integer page, Integer size) {
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.DESC, "id"));
         Sort sort = Sort.by(orders);
@@ -80,9 +81,9 @@ public class ArticleServiceImpl implements ArticleService {
 
         long count = articleRepository.count();
 
-        ResResult<ArticleListVO> resResult = new ResResult<>();
-        resResult.setCount((int) count);
-        resResult.setRow(articleList);
+        PageResult<ArticleListVO> resResult = new PageResult<>();
+        resResult.setTotal(count);
+        resResult.setRows(articleList);
         return resResult;
     }
 

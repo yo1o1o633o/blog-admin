@@ -1,15 +1,17 @@
 package com.yangs.blog.service;
 
-import com.yangs.blog.common.ResResult;
+import com.yangs.blog.common.PageResult;
 import com.yangs.blog.vo.ArchiveListVO;
 import com.yangs.blog.vo.ArticleDetailVO;
 import com.yangs.blog.wrapper.ArticleWrapper;
 
 import java.util.List;
 
-
+/**
+ * @author shuai.yang
+ */
 public interface ArticleService {
-    ResResult findAllArticle(Integer page, Integer size);
+    PageResult findAllArticle(Integer page, Integer size);
 
     void addArticle(ArticleWrapper.ArticleAddDTO request);
 

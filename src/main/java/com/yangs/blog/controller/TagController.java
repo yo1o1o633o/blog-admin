@@ -1,8 +1,11 @@
 package com.yangs.blog.controller;
 
+import com.yangs.blog.common.PageResult;
 import com.yangs.blog.common.ResResult;
 import com.yangs.blog.entity.BlogTag;
 import com.yangs.blog.service.TagService;
+import com.yangs.blog.utils.ResUtils;
+import com.yangs.blog.vo.TagListVO;
 import com.yangs.blog.wrapper.TagWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,36 +21,36 @@ public class TagController {
     TagService tagService;
 
     @PostMapping("/tag")
-    public List<BlogTag> findAllTagList() {
-        return tagService.findAllTag();
+    public ResResult<List<BlogTag>> findAllTagList() {
+        return ResUtils.data(tagService.findAllTag());
     }
 
     @PostMapping("/tag/list")
-    public ResResult listTag(@RequestBody @Valid TagWrapper.TagListDTO request) {
-        return tagService.findAllTagList(request);
+    public ResResult<PageResult<TagListVO>> listTag(@RequestBody @Valid TagWrapper.TagListDTO request) {
+        return ResUtils.data(tagService.findAllTagList(request));
     }
 
     @PostMapping("/tag/add")
-    public String addTag(@RequestBody @Valid TagWrapper.TagAddDTO request) {
+    public ResResult addTag(@RequestBody @Valid TagWrapper.TagAddDTO request) {
         tagService.addTag(request);
-        return null;
+        return ResUtils.suc();
     }
 
     @PostMapping("/tag/modify")
-    public String modifyTag(@RequestBody @Valid TagWrapper.TagModifyDTO request) {
+    public ResResult modifyTag(@RequestBody @Valid TagWrapper.TagModifyDTO request) {
         tagService.modifyTag(request);
-        return null;
+        return ResUtils.suc();
     }
 
     @PostMapping("/tag/modify/status")
-    public String modifyStatusTag(@RequestBody @Valid TagWrapper.TagModifyStatusDTO request) {
+    public ResResult modifyStatusTag(@RequestBody @Valid TagWrapper.TagModifyStatusDTO request) {
         tagService.modifyStatusTag(request);
-        return null;
+        return ResUtils.suc();
     }
 
     @PostMapping("/tag/remove")
-    public String removeTag(@RequestBody @Valid TagWrapper.TagDetailDTO request) {
+    public ResResult removeTag(@RequestBody @Valid TagWrapper.TagDetailDTO request) {
         tagService.removeTag(request);
-        return null;
+        return ResUtils.suc();
     }
 }

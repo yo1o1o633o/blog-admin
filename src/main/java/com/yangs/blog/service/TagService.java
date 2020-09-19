@@ -1,13 +1,14 @@
 package com.yangs.blog.service;
 
-import com.yangs.blog.common.ResResult;
+import com.yangs.blog.common.PageResult;
 import com.yangs.blog.entity.BlogTag;
+import com.yangs.blog.vo.TagListVO;
 import com.yangs.blog.wrapper.TagWrapper;
 
 import java.util.List;
 
 public interface TagService {
-    ResResult findAllTagList(TagWrapper.TagListDTO request);
+    PageResult<TagListVO> findAllTagList(TagWrapper.TagListDTO request);
 
     List<BlogTag> findAllTag();
 

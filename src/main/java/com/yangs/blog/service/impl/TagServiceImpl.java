@@ -1,5 +1,6 @@
 package com.yangs.blog.service.impl;
 
+import com.yangs.blog.common.PageResult;
 import com.yangs.blog.common.ResResult;
 import com.yangs.blog.entity.BlogTag;
 import com.yangs.blog.repository.BlogTagRepository;
@@ -22,7 +23,7 @@ public class TagServiceImpl implements TagService {
     BlogTagRepository tagRepository;
 
     @Override
-    public ResResult findAllTagList(TagWrapper.TagListDTO request) {
+    public PageResult<TagListVO> findAllTagList(TagWrapper.TagListDTO request) {
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.DESC, "id"));
         Sort sort = Sort.by(orders);
@@ -43,9 +44,9 @@ public class TagServiceImpl implements TagService {
 
         long count = tagRepository.count();
 
-        ResResult<TagListVO> result = new ResResult<>();
-        result.setRow(tagList);
-        result.setCount((int) count);
+        PageResult<TagListVO> result = new PageResult<>();
+        result.setRows(tagList);
+        result.setTotal(count);
         return result;
     }
 
