@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * @author shuai.yang
+ */
 @RestController
 public class TagController {
     @Autowired

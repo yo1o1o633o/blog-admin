@@ -13,7 +13,7 @@ public class ArticleWrapper {
 
         private Integer categoryId;
 
-        private Integer time;
+        private Integer archiveTime;
 
         private List<Integer> tagId;
 

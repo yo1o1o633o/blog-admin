@@ -11,6 +11,8 @@ import com.yangs.blog.repository.BlogArticleTagRepository;
 import com.yangs.blog.repository.BlogCategoryRepository;
 import com.yangs.blog.repository.BlogTagRepository;
 import com.yangs.blog.service.ArticleService;
+import com.yangs.blog.utils.DozerUtils;
+import com.yangs.blog.utils.SortUtils;
 import com.yangs.blog.utils.TimeUtils;
 import com.yangs.blog.vo.*;
 import com.yangs.blog.wrapper.ArticleWrapper;
@@ -41,23 +43,13 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public PageResult findAllArticle(Integer page, Integer size) {
-        List<Sort.Order> orders = new ArrayList<>();
-        orders.add(new Sort.Order(Sort.Direction.DESC, "id"));
-        Sort sort = Sort.by(orders);
-
-        PageRequest pageRequest = PageRequest.of(page - 1, size, sort);
+        PageRequest pageRequest = PageRequest.of(page - 1, size, SortUtils.sort(Sort.Direction.DESC, "id"));
         Page<BlogArticle> resultPage = articleRepository.findAll(pageRequest);
         List<BlogArticle> allArticle = resultPage.getContent();
 
         List<ArticleListVO> articleList = new ArrayList<>();
         for (BlogArticle article : allArticle) {
-            ArticleListVO articleListVO = new ArticleListVO();
-            articleListVO.setContent(article.getContent());
-            articleListVO.setId(article.getId());
-            articleListVO.setDescription(article.getDescription());
-            articleListVO.setTitle(article.getTitle());
-            articleListVO.setStatus(article.getStatus());
-            articleListVO.setViewNum(article.getViewNum());
+            ArticleListVO articleListVO = DozerUtils.map(article, ArticleListVO.class);
             articleListVO.setCreateTime(TimeUtils.formatTime(article.getCreateTime()));
             articleListVO.setUpdateTime(TimeUtils.formatTime(article.getUpdateTime()));
             articleListVO.setArchiveTime(TimeUtils.formatTime(article.getArchiveTime()));
@@ -89,12 +81,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void addArticle(ArticleWrapper.ArticleAddDTO request) {
-        BlogArticle article = new BlogArticle();
-        article.setTitle(request.getTitle());
-        article.setDescription(request.getDescription());
-        article.setContent(request.getContent());
-        article.setCategoryId(request.getCategoryId());
-        article.setArchiveTime(request.getTime());
+        BlogArticle article = DozerUtils.map(request, BlogArticle.class);
         article.setStatus(1);
         article.setViewNum(0);
         article.setCreateTime(TimeUtils.getCurrentTime());
@@ -112,7 +99,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public void modifyArticle(ArticleWrapper.ArticleModifyDTO request) {
         BlogArticle article = articleRepository.findById(request.getId()).orElse(null);
         if (article == null) {
@@ -152,12 +139,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (article == null) {
             return null;
         }
-        ArticleDetailVO articleDetailVO = new ArticleDetailVO();
-        articleDetailVO.setId(article.getId());
-        articleDetailVO.setTitle(article.getTitle());
-        articleDetailVO.setContent(article.getContent());
-        articleDetailVO.setDescription(article.getDescription());
-        articleDetailVO.setCategoryId(article.getCategoryId());
+        ArticleDetailVO articleDetailVO = DozerUtils.map(article, ArticleDetailVO.class);
 
         List<BlogArticleTag> articleTagList = articleTagRepository.findAllByArticleId(article.getId());
         List<Integer> tagList = new ArrayList<>();
@@ -173,7 +155,6 @@ public class ArticleServiceImpl implements ArticleService {
             }
         }
         articleDetailVO.setTagList(tagList);
-        articleDetailVO.setArchiveTime(article.getArchiveTime());
         articleDetailVO.setArchiveTimeStr(TimeUtils.formatTime(article.getArchiveTime()));
         articleDetailVO.setTagNameList(tagNameList);
         return articleDetailVO;
@@ -191,11 +172,7 @@ public class ArticleServiceImpl implements ArticleService {
         ArchiveListVO archiveListVO = new ArchiveListVO();
         archiveListVO.setYear("2020年");
 
-        List<Sort.Order> orders = new ArrayList<>();
-        orders.add(new Sort.Order(Sort.Direction.DESC, "archiveTime"));
-        Sort sort = Sort.by(orders);
-
-        List<BlogArticle> articleList = articleRepository.findAll(sort);
+        List<BlogArticle> articleList = articleRepository.findAll(SortUtils.sort(Sort.Direction.DESC, "archiveTime"));
         List<ArchiveItem> archiveItems = new ArrayList<>();
         for (BlogArticle article : articleList) {
             ArchiveItem archiveItem = new ArchiveItem();

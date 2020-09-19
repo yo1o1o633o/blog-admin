@@ -1,10 +1,11 @@
 package com.yangs.blog.service.impl;
 
 import com.yangs.blog.common.PageResult;
-import com.yangs.blog.common.ResResult;
 import com.yangs.blog.entity.BlogTag;
 import com.yangs.blog.repository.BlogTagRepository;
 import com.yangs.blog.service.TagService;
+import com.yangs.blog.utils.DozerUtils;
+import com.yangs.blog.utils.SortUtils;
 import com.yangs.blog.utils.TimeUtils;
 import com.yangs.blog.vo.TagListVO;
 import com.yangs.blog.wrapper.TagWrapper;
@@ -24,21 +25,14 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public PageResult<TagListVO> findAllTagList(TagWrapper.TagListDTO request) {
-        List<Sort.Order> orders = new ArrayList<>();
-        orders.add(new Sort.Order(Sort.Direction.DESC, "id"));
-        Sort sort = Sort.by(orders);
-
-        PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize(), sort);
+        PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize(), SortUtils.sort(Sort.Direction.DESC, "id"));
         Page<BlogTag> tagPage = tagRepository.findAll(pageRequest);
 
         List<TagListVO> tagList = new ArrayList<>();
 
         for (BlogTag tag : tagPage.getContent()) {
-            TagListVO tagListVO = new TagListVO();
+            TagListVO tagListVO = DozerUtils.map(tag, TagListVO.class);
             tagListVO.setCreateTime(TimeUtils.formatTime(tag.getCreateTime()));
-            tagListVO.setName(tag.getName());
-            tagListVO.setStatus(tag.getStatus());
-            tagListVO.setId(tag.getId());
             tagList.add(tagListVO);
         }
 

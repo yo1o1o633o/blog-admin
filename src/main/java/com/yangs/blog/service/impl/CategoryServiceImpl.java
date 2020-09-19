@@ -5,6 +5,7 @@ import com.yangs.blog.common.ResResult;
 import com.yangs.blog.entity.BlogCategory;
 import com.yangs.blog.repository.BlogCategoryRepository;
 import com.yangs.blog.service.CategoryService;
+import com.yangs.blog.utils.SortUtils;
 import com.yangs.blog.utils.TimeUtils;
 import com.yangs.blog.vo.CategoryListVO;
 import com.yangs.blog.wrapper.CategoryWrapper;
@@ -24,11 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public PageResult<CategoryListVO> findAllCategory(CategoryWrapper.CategoryListDTO request) {
-        List<Sort.Order> orders = new ArrayList<>();
-        orders.add(new Sort.Order(Sort.Direction.DESC, "id"));
-        Sort sort = Sort.by(orders);
-
-        PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize(), sort);
+        PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize(), SortUtils.sort(Sort.Direction.DESC, "id"));
         Page<BlogCategory> categoryList = categoryRepository.findAll(pageRequest);
 
         List<CategoryListVO> categoryLists = new ArrayList<>();
