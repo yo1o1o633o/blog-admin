@@ -24,8 +24,8 @@ public class CategoryController {
     CategoryService categoryService;
 
     @PostMapping("/category")
-    public List<BlogCategory> findAllCategory() {
-        return categoryService.findAllCategoryList();
+    public ResResult<List<BlogCategory>> findAllCategory() {
+        return ResUtils.data(categoryService.findAllCategoryList());
     }
 
     @PostMapping("/category/list")

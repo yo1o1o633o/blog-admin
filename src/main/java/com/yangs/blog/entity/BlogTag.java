@@ -1,5 +1,6 @@
 package com.yangs.blog.entity;
 
+import com.yangs.blog.utils.TimeUtils;
 import lombok.Data;
 
 import javax.persistence.*;

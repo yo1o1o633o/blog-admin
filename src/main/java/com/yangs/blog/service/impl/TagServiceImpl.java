@@ -29,7 +29,6 @@ public class TagServiceImpl implements TagService {
         Page<BlogTag> tagPage = tagRepository.findAll(pageRequest);
 
         List<TagListVO> tagList = new ArrayList<>();
-
         for (BlogTag tag : tagPage.getContent()) {
             TagListVO tagListVO = DozerUtils.map(tag, TagListVO.class);
             tagListVO.setCreateTime(TimeUtils.formatTime(tag.getCreateTime()));
