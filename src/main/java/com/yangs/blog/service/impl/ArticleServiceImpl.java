@@ -1,10 +1,8 @@
 package com.yangs.blog.service.impl;
 
 import com.yangs.blog.common.PageResult;
-import com.yangs.blog.common.ResResult;
 import com.yangs.blog.entity.BlogArticle;
 import com.yangs.blog.entity.BlogArticleTag;
-import com.yangs.blog.entity.BlogCategory;
 import com.yangs.blog.entity.BlogTag;
 import com.yangs.blog.repository.BlogArticleRepository;
 import com.yangs.blog.repository.BlogArticleTagRepository;
@@ -25,7 +23,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author shuai.yang

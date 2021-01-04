@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @author shuai.yang
+ */
 @Data
 public class ArticleListVO {
     private Integer id;

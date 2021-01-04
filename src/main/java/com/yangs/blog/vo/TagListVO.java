@@ -2,6 +2,9 @@ package com.yangs.blog.vo;
 
 import lombok.Data;
 
+/**
+ * @author shuai.yang
+ */
 @Data
 public class TagListVO {
     private Integer id;

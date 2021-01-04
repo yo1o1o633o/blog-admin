@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author shuai.yang
+ */
 @Service
 public class TagServiceImpl implements TagService {
     @Autowired

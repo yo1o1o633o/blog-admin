@@ -1,7 +1,6 @@
 package com.yangs.blog.service.impl;
 
 import com.yangs.blog.common.PageResult;
-import com.yangs.blog.common.ResResult;
 import com.yangs.blog.entity.BlogCategory;
 import com.yangs.blog.repository.BlogCategoryRepository;
 import com.yangs.blog.service.CategoryService;
@@ -18,6 +17,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author shuai.yang
+ */
 @Service
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
