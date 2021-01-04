@@ -1,7 +1,7 @@
 package com.yangs.blog.controller;
 
 import com.yangs.blog.common.PageResult;
-import com.yangs.blog.common.ResResult;
+import utils.ResResult;
 import com.yangs.blog.entity.BlogTag;
 import com.yangs.blog.service.TagService;
 import com.yangs.blog.utils.ResUtils;

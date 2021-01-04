@@ -4,11 +4,13 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * @author shuai.yang
+ */
 @Data
 @Entity
 @Table(name = "blog_article")
 public class BlogArticle {
-
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;

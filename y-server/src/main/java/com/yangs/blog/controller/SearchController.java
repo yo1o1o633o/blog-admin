@@ -1,6 +1,6 @@
 package com.yangs.blog.controller;
 
-import com.yangs.blog.common.ResResult;
+import utils.ResResult;
 import com.yangs.blog.entity.BlogSearchHotWord;
 import com.yangs.blog.service.SearchService;
 import com.yangs.blog.utils.ResUtils;

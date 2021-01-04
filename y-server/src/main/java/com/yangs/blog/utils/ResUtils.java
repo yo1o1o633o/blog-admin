@@ -1,6 +1,6 @@
 package com.yangs.blog.utils;
 
-import com.yangs.blog.common.ResResult;
+import utils.ResResult;
 
 /**
  * @author shuai.yang

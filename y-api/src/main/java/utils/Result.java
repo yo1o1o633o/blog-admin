@@ -1,4 +1,4 @@
-package com.yangs.blog.common;
+package utils;
 
 /**
  * @author shuai.yang

@@ -1,7 +1,7 @@
 package com.yangs.blog.controller;
 
 import com.yangs.blog.common.PageResult;
-import com.yangs.blog.common.ResResult;
+import utils.ResResult;
 import com.yangs.blog.entity.BlogCategory;
 import com.yangs.blog.service.CategoryService;
 import com.yangs.blog.utils.ResUtils;

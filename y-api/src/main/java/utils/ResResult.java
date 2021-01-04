@@ -1,14 +1,8 @@
-package com.yangs.blog.common;
-
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import lombok.Data;
-
-import java.util.List;
+package utils;
 
 /**
  * @author shuai.yang
  */
-@Data
 public class ResResult<T> implements Result {
     private Integer status;
 

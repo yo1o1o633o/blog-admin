@@ -39,7 +39,7 @@ public class ArticleServiceImpl implements ArticleService {
     BlogTagRepository tagRepository;
 
     @Override
-    public PageResult findAllArticle(Integer page, Integer size) {
+    public PageResult<ArticleListVO> list(Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page - 1, size, SortUtils.sort(Sort.Direction.DESC, "id"));
         Page<BlogArticle> resultPage = articleRepository.findAll(pageRequest);
         List<BlogArticle> allArticle = resultPage.getContent();
@@ -68,16 +68,14 @@ public class ArticleServiceImpl implements ArticleService {
             articleList.add(articleListVO);
         }
 
-        long count = articleRepository.count();
-
-        PageResult<ArticleListVO> resResult = new PageResult<>();
-        resResult.setTotal(count);
-        resResult.setRows(articleList);
-        return resResult;
+        PageResult<ArticleListVO> result = new PageResult<>();
+        result.setTotal(articleRepository.count());
+        result.setRows(articleList);
+        return result;
     }
 
     @Override
-    public void addArticle(ArticleWrapper.ArticleAddDTO request) {
+    public void add(ArticleWrapper.ArticleAddDTO request) {
         BlogArticle article = DozerUtils.map(request, BlogArticle.class);
         article.setStatus(1);
         article.setViewNum(0);
@@ -97,7 +95,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public void modifyArticle(ArticleWrapper.ArticleModifyDTO request) {
+    public void modify(ArticleWrapper.ArticleModifyDTO request) {
         BlogArticle article = articleRepository.findById(request.getId()).orElse(null);
         if (article == null) {
             return;
@@ -122,7 +120,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void modifyStatusArticle(ArticleWrapper.ArticleModifyStatusDTO request) {
+    public void modify(ArticleWrapper.ArticleModifyStatusDTO request) {
         BlogArticle article = articleRepository.findById(request.getId()).orElse(null);
         if (article != null) {
             article.setStatus(request.getStatus());
@@ -131,7 +129,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleDetailVO findArticleById(Integer id) {
+    public ArticleDetailVO detail(Integer id) {
         BlogArticle article = articleRepository.findById(id).orElse(null);
         if (article == null) {
             return null;
@@ -158,7 +156,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void removeArticle(Integer id) {
+    public void remove(Integer id) {
         articleRepository.findById(id).ifPresent(article -> articleRepository.deleteById(id));
     }
 
