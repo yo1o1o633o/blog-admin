@@ -1,8 +1,11 @@
 package utils;
 
+import lombok.Data;
+
 /**
  * @author shuai.yang
  */
+@Data
 public class ResResult<T> implements Result {
     private Integer status;
 

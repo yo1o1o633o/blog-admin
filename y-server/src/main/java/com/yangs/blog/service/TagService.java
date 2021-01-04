@@ -2,6 +2,7 @@ package com.yangs.blog.service;
 
 import com.yangs.blog.common.PageResult;
 import com.yangs.blog.entity.BlogTag;
+import com.yangs.blog.vo.ArticleTagListVO;
 import com.yangs.blog.vo.TagListVO;
 import com.yangs.blog.wrapper.TagWrapper;
 
@@ -19,4 +20,6 @@ public interface TagService {
     void modifyStatusTag(TagWrapper.TagModifyStatusDTO request);
 
     void removeTag(TagWrapper.TagDetailDTO request);
+
+    List<ArticleTagListVO> list(Integer articleId);
 }

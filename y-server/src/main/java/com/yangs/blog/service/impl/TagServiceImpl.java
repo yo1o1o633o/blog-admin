@@ -1,12 +1,15 @@
 package com.yangs.blog.service.impl;
 
 import com.yangs.blog.common.PageResult;
+import com.yangs.blog.entity.BlogArticleTag;
 import com.yangs.blog.entity.BlogTag;
+import com.yangs.blog.repository.BlogArticleTagRepository;
 import com.yangs.blog.repository.BlogTagRepository;
 import com.yangs.blog.service.TagService;
 import com.yangs.blog.utils.DozerUtils;
 import com.yangs.blog.utils.SortUtils;
 import com.yangs.blog.utils.TimeUtils;
+import com.yangs.blog.vo.ArticleTagListVO;
 import com.yangs.blog.vo.TagListVO;
 import com.yangs.blog.wrapper.TagWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,8 @@ import java.util.List;
 public class TagServiceImpl implements TagService {
     @Autowired
     BlogTagRepository tagRepository;
+    @Autowired
+    BlogArticleTagRepository articleTagRepository;
 
     @Override
     public PageResult<TagListVO> findAllTagList(TagWrapper.TagListDTO request) {
@@ -81,5 +86,21 @@ public class TagServiceImpl implements TagService {
     @Override
     public void removeTag(TagWrapper.TagDetailDTO request) {
         tagRepository.findById(request.getId()).ifPresent(tag -> tagRepository.deleteById(request.getId()));
+    }
+
+    @Override
+    public List<ArticleTagListVO> list(Integer articleId) {
+        List<ArticleTagListVO> articleTagListVOList = new ArrayList<>();
+        List<BlogArticleTag> articleTags = articleTagRepository.findAllByArticleId(articleId);
+        for (BlogArticleTag articleTag : articleTags) {
+            BlogTag blogTag = tagRepository.findById(articleTag.getTagId()).orElse(null);
+            if (blogTag != null) {
+                ArticleTagListVO articleTagListVO = new ArticleTagListVO();
+                articleTagListVO.setId(blogTag.getId());
+                articleTagListVO.setName(blogTag.getName());
+                articleTagListVOList.add(articleTagListVO);
+            }
+        }
+        return articleTagListVOList;
     }
 }

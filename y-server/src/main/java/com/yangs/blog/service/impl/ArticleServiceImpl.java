@@ -9,6 +9,7 @@ import com.yangs.blog.repository.BlogArticleTagRepository;
 import com.yangs.blog.repository.BlogCategoryRepository;
 import com.yangs.blog.repository.BlogTagRepository;
 import com.yangs.blog.service.ArticleService;
+import com.yangs.blog.service.TagService;
 import com.yangs.blog.utils.DozerUtils;
 import com.yangs.blog.utils.SortUtils;
 import com.yangs.blog.utils.TimeUtils;
@@ -37,41 +38,36 @@ public class ArticleServiceImpl implements ArticleService {
     BlogCategoryRepository categoryRepository;
     @Autowired
     BlogTagRepository tagRepository;
+    @Autowired
+    TagService tagService;
 
     @Override
     public PageResult<ArticleListVO> list(Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page - 1, size, SortUtils.sort(Sort.Direction.DESC, "id"));
         Page<BlogArticle> resultPage = articleRepository.findAll(pageRequest);
-        List<BlogArticle> allArticle = resultPage.getContent();
-
-        List<ArticleListVO> articleList = new ArrayList<>();
-        for (BlogArticle article : allArticle) {
-            ArticleListVO articleListVO = DozerUtils.map(article, ArticleListVO.class);
-            articleListVO.setCreateTime(TimeUtils.formatTime(article.getCreateTime()));
-            articleListVO.setUpdateTime(TimeUtils.formatTime(article.getUpdateTime()));
-            articleListVO.setArchiveTime(TimeUtils.formatTime(article.getArchiveTime()));
-            if (article.getCategoryId() != null) {
-                categoryRepository.findById(article.getCategoryId()).ifPresent(category -> articleListVO.setCategoryName(category.getName()));
-            }
-            List<BlogArticleTag> articleTags = articleTagRepository.findAllByArticleId(article.getId());
-            List<ArticleTagListVO> articleTagListVOList = new ArrayList<>();
-            for (BlogArticleTag articleTag : articleTags) {
-                BlogTag blogTag = tagRepository.findById(articleTag.getTagId()).orElse(null);
-                if (blogTag != null) {
-                    ArticleTagListVO articleTagListVO = new ArticleTagListVO();
-                    articleTagListVO.setId(blogTag.getId());
-                    articleTagListVO.setName(blogTag.getName());
-                    articleTagListVOList.add(articleTagListVO);
-                }
-            }
-            articleListVO.setTagList(articleTagListVOList);
-            articleList.add(articleListVO);
-        }
 
         PageResult<ArticleListVO> result = new PageResult<>();
         result.setTotal(articleRepository.count());
-        result.setRows(articleList);
+        result.setRows(constructList(resultPage.getContent()));
         return result;
+    }
+
+    private List<ArticleListVO> constructList(List<BlogArticle> allArticle) {
+        List<ArticleListVO> articleList = new ArrayList<>();
+        for (BlogArticle article : allArticle) {
+            articleList.add(constructResult(article));
+        }
+        return articleList;
+    }
+
+    private ArticleListVO constructResult(BlogArticle article) {
+        ArticleListVO articleListVO = DozerUtils.map(article, ArticleListVO.class);
+        articleListVO.setCreateTime(TimeUtils.formatTime(article.getCreateTime()));
+        articleListVO.setUpdateTime(TimeUtils.formatTime(article.getUpdateTime()));
+        articleListVO.setArchiveTime(TimeUtils.formatTime(article.getArchiveTime()));
+        articleListVO.setTagList(tagService.list(article.getId()));
+        categoryRepository.findById(article.getCategoryId()).ifPresent(category -> articleListVO.setCategoryName(category.getName()));
+        return articleListVO;
     }
 
     @Override
