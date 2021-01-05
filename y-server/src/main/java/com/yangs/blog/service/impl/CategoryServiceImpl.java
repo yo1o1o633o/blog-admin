@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
     BlogCategoryRepository categoryRepository;
 
     @Override
-    public PageResult<CategoryListVO> findAllCategory(CategoryWrapper.CategoryListDTO request) {
+    public PageResult<CategoryListVO> queryList(CategoryWrapper.CategoryListDTO request) {
         PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize(), SortUtils.sort(Sort.Direction.DESC, "id"));
         Page<BlogCategory> categoryList = categoryRepository.findAll(pageRequest);
 
@@ -48,12 +48,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<BlogCategory> findAllCategoryList() {
+    public List<BlogCategory> list() {
         return categoryRepository.findAllByStatus(1);
     }
 
     @Override
-    public void addCategory(CategoryWrapper.CategoryAddDTO request) {
+    public void add(CategoryWrapper.CategoryAddDTO request) {
         BlogCategory category = new BlogCategory();
         category.setStatus(1);
         category.setName(request.getName());
@@ -63,7 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void modifyCategory(CategoryWrapper.CategoryModifyDTO request) {
+    public void modify(CategoryWrapper.CategoryModifyDTO request) {
         BlogCategory category = categoryRepository.findById(request.getId()).orElse(null);
         if (category == null) {
             return;
@@ -74,7 +74,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void modifyStatusCategory(CategoryWrapper.CategoryModifyStatusDTO request) {
+    public void modify(CategoryWrapper.CategoryModifyStatusDTO request) {
         BlogCategory category = categoryRepository.findById(request.getId()).orElse(null);
         if (category != null) {
             category.setStatus(request.getStatus());
@@ -83,7 +83,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void removeCategory(CategoryWrapper.CategoryDetailDTO request) {
+    public void remove(CategoryWrapper.CategoryDetailDTO request) {
         categoryRepository.deleteById(request.getId());
     }
 }

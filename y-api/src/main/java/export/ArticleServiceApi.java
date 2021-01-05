@@ -1,10 +1,9 @@
 package export;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import utils.ResResult;
 import wrapper.ArticleWrapper;
-
-import java.util.List;
 
 /**
  * @author shuai.yang
@@ -12,4 +11,7 @@ import java.util.List;
 public interface ArticleServiceApi {
     @GetMapping("/article")
     ResResult list(ArticleWrapper.ListDTO listDTO);
+
+    @PostMapping("/article/add")
+    ResResult add(ArticleWrapper.AddDTO addDTO);
 }

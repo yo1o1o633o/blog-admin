@@ -9,17 +9,17 @@ import com.yangs.blog.wrapper.TagWrapper;
 import java.util.List;
 
 public interface TagService {
-    PageResult<TagListVO> findAllTagList(TagWrapper.TagListDTO request);
+    PageResult<TagListVO> queryList(TagWrapper.TagListDTO request);
 
     List<BlogTag> findAllTag();
 
-    void addTag(TagWrapper.TagAddDTO request);
+    void add(TagWrapper.TagAddDTO request);
 
-    void modifyTag(TagWrapper.TagModifyDTO request);
+    void modify(TagWrapper.TagModifyDTO request);
 
-    void modifyStatusTag(TagWrapper.TagModifyStatusDTO request);
+    void modify(TagWrapper.TagModifyStatusDTO request);
 
-    void removeTag(TagWrapper.TagDetailDTO request);
+    void remove(TagWrapper.TagDetailDTO request);
 
     List<ArticleTagListVO> list(Integer articleId);
 }

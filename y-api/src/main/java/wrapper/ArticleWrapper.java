@@ -2,6 +2,8 @@ package wrapper;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author shuai.yang
  */
@@ -12,5 +14,20 @@ public class ArticleWrapper {
         private Integer page;
 
         private Integer size;
+    }
+
+    @Data
+    public static class AddDTO {
+        private String title;
+
+        private Integer categoryId;
+
+        private Integer archiveTime;
+
+        private List<Integer> tagId;
+
+        private String description;
+
+        private String content;
     }
 }

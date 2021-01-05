@@ -30,30 +30,30 @@ public class TagController {
 
     @PostMapping("/tag/list")
     public ResResult<PageResult<TagListVO>> listTag(@RequestBody @Valid TagWrapper.TagListDTO request) {
-        return ResUtils.data(tagService.findAllTagList(request));
+        return ResUtils.data(tagService.queryList(request));
     }
 
     @PostMapping("/tag/add")
     public ResResult addTag(@RequestBody @Valid TagWrapper.TagAddDTO request) {
-        tagService.addTag(request);
+        tagService.add(request);
         return ResUtils.suc();
     }
 
     @PostMapping("/tag/modify")
     public ResResult modifyTag(@RequestBody @Valid TagWrapper.TagModifyDTO request) {
-        tagService.modifyTag(request);
+        tagService.modify(request);
         return ResUtils.suc();
     }
 
     @PostMapping("/tag/modify/status")
     public ResResult modifyStatusTag(@RequestBody @Valid TagWrapper.TagModifyStatusDTO request) {
-        tagService.modifyStatusTag(request);
+        tagService.modify(request);
         return ResUtils.suc();
     }
 
     @PostMapping("/tag/remove")
-    public ResResult removeTag(@RequestBody @Valid TagWrapper.TagDetailDTO request) {
-        tagService.removeTag(request);
+    public ResResult remove(@RequestBody @Valid TagWrapper.TagDetailDTO request) {
+        tagService.remove(request);
         return ResUtils.suc();
     }
 }

@@ -71,8 +71,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void add(ArticleWrapper.ArticleAddDTO request) {
-        BlogArticle article = DozerUtils.map(request, BlogArticle.class);
+    public void add(wrapper.ArticleWrapper.AddDTO addDTO) {
+        BlogArticle article = DozerUtils.map(addDTO, BlogArticle.class);
         article.setStatus(1);
         article.setViewNum(0);
         article.setCreateTime(TimeUtils.getCurrentTime());
@@ -80,7 +80,7 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.save(article);
 
         Integer id = article.getId();
-        for (Integer tagId : request.getTagId()) {
+        for (Integer tagId : addDTO.getTagId()) {
             BlogArticleTag blogArticleTag = new BlogArticleTag();
             blogArticleTag.setArticleId(id);
             blogArticleTag.setTagId(tagId);

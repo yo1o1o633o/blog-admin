@@ -14,7 +14,7 @@ import java.util.List;
 public interface ArticleService {
     PageResult<ArticleListVO> list(Integer page, Integer size);
 
-    void add(ArticleWrapper.ArticleAddDTO request);
+    void add(wrapper.ArticleWrapper.AddDTO addDTO);
 
     void modify(ArticleWrapper.ArticleModifyDTO request);
 

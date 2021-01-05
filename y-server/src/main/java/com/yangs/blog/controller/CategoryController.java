@@ -25,35 +25,35 @@ public class CategoryController {
 
     @PostMapping("/category")
     public ResResult<List<BlogCategory>> findAllCategory() {
-        return ResUtils.data(categoryService.findAllCategoryList());
+        return ResUtils.data(categoryService.list());
     }
 
     @PostMapping("/category/list")
     public ResResult<PageResult<CategoryListVO>> listCategory(@RequestBody @Valid CategoryWrapper.CategoryListDTO request) {
-        return ResUtils.data(categoryService.findAllCategory(request));
+        return ResUtils.data(categoryService.queryList(request));
     }
 
     @PostMapping("/category/add")
     public ResResult addCategory(@RequestBody @Valid CategoryWrapper.CategoryAddDTO request) {
-        categoryService.addCategory(request);
+        categoryService.add(request);
         return ResUtils.suc();
     }
 
     @PostMapping("/category/modify")
     public ResResult modifyCategory(@RequestBody @Valid CategoryWrapper.CategoryModifyDTO request) {
-        categoryService.modifyCategory(request);
+        categoryService.modify(request);
         return ResUtils.suc();
     }
 
     @PostMapping("/category/modify/status")
     public ResResult modifyStatusCategory(@RequestBody @Valid CategoryWrapper.CategoryModifyStatusDTO request) {
-        categoryService.modifyStatusCategory(request);
+        categoryService.modify(request);
         return ResUtils.suc();
     }
 
     @PostMapping("/category/remove")
     public ResResult removeCategory(@RequestBody @Valid CategoryWrapper.CategoryDetailDTO request) {
-        categoryService.removeCategory(request);
+        categoryService.remove(request);
         return ResUtils.suc();
     }
 }

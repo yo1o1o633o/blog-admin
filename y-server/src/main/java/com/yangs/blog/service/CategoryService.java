@@ -11,15 +11,15 @@ import java.util.List;
  * @author shuai.yang
  */
 public interface CategoryService {
-    PageResult<CategoryListVO> findAllCategory(CategoryWrapper.CategoryListDTO request);
+    PageResult<CategoryListVO> queryList(CategoryWrapper.CategoryListDTO request);
 
-    List<BlogCategory> findAllCategoryList();
+    List<BlogCategory> list();
 
-    void addCategory(CategoryWrapper.CategoryAddDTO request);
+    void add(CategoryWrapper.CategoryAddDTO request);
 
-    void modifyCategory(CategoryWrapper.CategoryModifyDTO request);
+    void modify(CategoryWrapper.CategoryModifyDTO request);
 
-    void modifyStatusCategory(CategoryWrapper.CategoryModifyStatusDTO request);
+    void modify(CategoryWrapper.CategoryModifyStatusDTO request);
 
-    void removeCategory(CategoryWrapper.CategoryDetailDTO request);
+    void remove(CategoryWrapper.CategoryDetailDTO request);
 }

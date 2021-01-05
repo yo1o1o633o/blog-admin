@@ -32,7 +32,7 @@ public class TagServiceImpl implements TagService {
     BlogArticleTagRepository articleTagRepository;
 
     @Override
-    public PageResult<TagListVO> findAllTagList(TagWrapper.TagListDTO request) {
+    public PageResult<TagListVO> queryList(TagWrapper.TagListDTO request) {
         PageRequest pageRequest = PageRequest.of(request.getPage() - 1, request.getSize(), SortUtils.sort(Sort.Direction.DESC, "id"));
         Page<BlogTag> tagPage = tagRepository.findAll(pageRequest);
 
@@ -57,7 +57,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void addTag(TagWrapper.TagAddDTO request) {
+    public void add(TagWrapper.TagAddDTO request) {
         BlogTag blogTag = new BlogTag();
         blogTag.setName(request.getName());
         blogTag.setStatus(1);
@@ -67,7 +67,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void modifyTag(TagWrapper.TagModifyDTO request) {
+    public void modify(TagWrapper.TagModifyDTO request) {
         tagRepository.findById(request.getId()).ifPresent(tag -> {
             tag.setName(request.getName());
             tagRepository.save(tag);
@@ -75,7 +75,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void modifyStatusTag(TagWrapper.TagModifyStatusDTO request) {
+    public void modify(TagWrapper.TagModifyStatusDTO request) {
         BlogTag blogTag = tagRepository.findById(request.getId()).orElse(null);
         if (blogTag != null) {
             blogTag.setStatus(request.getStatus());
@@ -84,7 +84,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void removeTag(TagWrapper.TagDetailDTO request) {
+    public void remove(TagWrapper.TagDetailDTO request) {
         tagRepository.findById(request.getId()).ifPresent(tag -> tagRepository.deleteById(request.getId()));
     }
 

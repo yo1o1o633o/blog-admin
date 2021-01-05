@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+/**
+ * @author shuai.yang
+ */
 @Configuration
 public class DozerConfiguration {
     @Bean

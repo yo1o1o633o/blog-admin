@@ -13,7 +13,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * @author shuai.yang
@@ -28,20 +27,20 @@ public class ArticleController implements ArticleServiceApi {
         return ResUtils.data(articleService.list(listDTO.getPage(), listDTO.getSize()));
     }
 
-    @PostMapping("/article/a")
-    public ResResult addArticle(@RequestBody @Valid ArticleWrapper.ArticleAddDTO request) {
-        articleService.add(request);
+    @Override
+    public ResResult add(@RequestBody @Valid wrapper.ArticleWrapper.AddDTO addDTO) {
+        articleService.add(addDTO);
         return ResUtils.suc();
     }
 
-    @PutMapping("/article/b")
-    public ResResult modifyArticle(@RequestBody @Valid ArticleWrapper.ArticleModifyDTO request) {
+    @PutMapping("/article/modify")
+    public ResResult modify(@RequestBody @Valid ArticleWrapper.ArticleModifyDTO request) {
         articleService.modify(request);
         return ResUtils.suc();
     }
 
-    @PutMapping("/article/status")
-    public ResResult modifyArticleStatus(@RequestBody @Valid ArticleWrapper.ArticleModifyStatusDTO request) {
+    @PutMapping("/article/modify/status")
+    public ResResult modifyStatus(@RequestBody @Valid ArticleWrapper.ArticleModifyStatusDTO request) {
         articleService.modify(request);
         return ResUtils.suc();
     }
@@ -51,8 +50,8 @@ public class ArticleController implements ArticleServiceApi {
         return ResUtils.data(articleService.detail(id));
     }
 
-    @DeleteMapping("/article/c")
-    public ResResult removeArticle(Integer id) {
+    @DeleteMapping("/article/remove")
+    public ResResult remove(Integer id) {
         articleService.remove(id);
         return ResUtils.suc();
     }
