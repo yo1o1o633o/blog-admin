@@ -48,11 +48,11 @@ public class ArticleServiceImpl implements ArticleService {
 
         PageResult<ArticleListVO> result = new PageResult<>();
         result.setTotal(articleRepository.count());
-        result.setRows(constructList(resultPage.getContent()));
+        result.setRows(constructResultList(resultPage.getContent()));
         return result;
     }
 
-    private List<ArticleListVO> constructList(List<BlogArticle> allArticle) {
+    private List<ArticleListVO> constructResultList(List<BlogArticle> allArticle) {
         List<ArticleListVO> articleList = new ArrayList<>();
         for (BlogArticle article : allArticle) {
             articleList.add(constructResult(article));
@@ -96,23 +96,19 @@ public class ArticleServiceImpl implements ArticleService {
         if (article == null) {
             return;
         }
-        article.setTitle(request.getTitle());
-        article.setContent(request.getContent());
-        article.setDescription(request.getDescription());
-        article.setArchiveTime(request.getTime());
-        article.setCategoryId(request.getCategoryId());
+        article = DozerUtils.map(request, BlogArticle.class);
+        article.setId(request.getId());
+        articleRepository.save(article);
+
         articleTagRepository.deleteAllByArticleId(article.getId());
         if (request.getTagIds() != null && request.getTagIds().size() > 0) {
             for (Integer tagId : request.getTagIds()) {
                 BlogArticleTag blogArticleTag = new BlogArticleTag();
                 blogArticleTag.setArticleId(article.getId());
                 blogArticleTag.setTagId(tagId);
-
                 articleTagRepository.save(blogArticleTag);
             }
         }
-        article.setUpdateTime(TimeUtils.getCurrentTime());
-        articleRepository.save(article);
     }
 
     @Override

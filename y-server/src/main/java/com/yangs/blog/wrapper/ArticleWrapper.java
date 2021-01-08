@@ -32,7 +32,7 @@ public class ArticleWrapper {
 
         private String content;
 
-        private Integer time;
+        private Integer archiveTime;
 
         private String description;
 
